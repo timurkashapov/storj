@@ -23,6 +23,7 @@ import (
 
 	"storj.io/storj/internal/fpath"
 	"storj.io/storj/internal/processgroup"
+	"storj.io/storj/internal/version"
 )
 
 const folderPermissions = 0744
@@ -155,9 +156,20 @@ func newNetwork(flags *Flags) (*Processes, error) {
 		Address:    net.JoinHostPort(host, strconv.Itoa(versioncontrolPort)),
 	})
 
+	// if built with using scripts/release.sh add Version Tag to allowed versions of
+	// Versioning Server
+	test := version.Info{}
+	var ver string
+	if version.Build != test {
+		ver = version.Build.Version.String()
+	}
+
 	versioncontrol.Arguments = withCommon(versioncontrol.Directory, Arguments{
 		"setup": {
 			"--address", versioncontrol.Address,
+			"--versions.storagenode", ver,
+			"--versions.satellite", ver,
+			"--versions.bootstrap", ver,
 		},
 		"run": {},
 	})
