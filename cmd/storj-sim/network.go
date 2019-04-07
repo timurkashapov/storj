@@ -170,6 +170,8 @@ func newNetwork(flags *Flags) (*Processes, error) {
 			"--versions.storagenode", ver,
 			"--versions.satellite", ver,
 			"--versions.bootstrap", ver,
+			"--versions.uplink", ver,
+			"--versions.gateway", ver,
 		},
 		"run": {},
 	})
