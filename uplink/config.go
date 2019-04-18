@@ -75,6 +75,7 @@ func (kfp keyFilepath) Key() (storj.Key, error) {
 // EncryptionConfig is a configuration struct that keeps details about
 // encrypting segments
 type EncryptionConfig struct {
+	Key         string
 	KeyFilepath string      `help:"the path to the file which contains the root key for encrypting the data"`
 	BlockSize   memory.Size `help:"size (in bytes) of encrypted blocks" default:"1KiB"`
 	DataType    int         `help:"Type of encryption to use for content and metadata (1=AES-GCM, 2=SecretBox)" default:"1"`
@@ -158,6 +159,8 @@ func (c Config) GetMetainfo(ctx context.Context, identity *identity.FullIdentity
 			return nil, nil, err
 		}
 	}
+
+	c.Enc.Key = string(key[:])
 
 	streams, err := streams.NewStreamStore(segments, c.Client.SegmentSize.Int64(), &key, c.Enc.BlockSize.Int(), storj.Cipher(c.Enc.DataType))
 	if err != nil {
