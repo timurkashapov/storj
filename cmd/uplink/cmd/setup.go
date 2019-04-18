@@ -149,7 +149,8 @@ func cmdSetup(cmd *cobra.Command, args []string) (err error) {
 		}
 	}
 
-	return process.SaveConfigWithAllDefaults(cmd.Flags(), filepath.Join(setupDir, "config.yaml"), override)
+	return process.SaveConfigWithAllDefaults(
+		cmd.Flags(), filepath.Join(setupDir, process.DefaultConfFilename), override)
 }
 
 // ApplyDefaultHostAndPortToAddrFlag applies the default host and/or port if either is missing in the specified flag name.
